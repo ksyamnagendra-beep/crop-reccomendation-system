@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CropAI — Intelligent Crop Recommendation & Soil Health Advisory System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#" class="brand">
+        <div class="brand-icon">🌱</div>
+        <div class="brand-text">
+          <h1>CropAI Advisor</h1>
+          <span>Smart Precision Agriculture</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <button id="btnOpenCatalog" class="btn-nav" title="Browse 22 Supported Crops">
+          <span>📖</span>
+          <span>Crop Library</span>
+        </button>
+        <button id="btnPrintReport" class="btn-nav" title="Print Agronomic Advisory Report">
+          <span>🖨️</span>
+          <span>Print Report</span>
+        </button>
+        <button id="btnThemeToggle" class="btn-nav theme-toggle-btn" title="Toggle Light / Dark Mode">
+          <span id="themeIcon">☀️</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="hero-banner">
+    <div class="hero-pill">
+      <span class="dot"></span>
+      <span>Machine Learning Agronomic Classifier & Diagnostic Engine</span>
+    </div>
+    <h2>Intelligent Crop Recommendation System</h2>
+    <p>Predict the highest-yielding crop tailored to your field's soil chemistry (NPK), climate temperature, relative humidity, soil pH, and seasonal rainfall.</p>
+  </section>
+
+  <!-- Quick Test Presets Strip -->
+  <section class="preset-strip-wrapper">
+    <div class="preset-header">
+      <span>⚡ Quick Agricultural Presets:</span>
+      <span style="font-size: 0.75rem; color: var(--text-dim);">Click to autofill environmental parameters</span>
+    </div>
+    <div class="preset-strip" id="presetStrip">
+      <button class="preset-chip" data-preset="rice">🌾 Wetland Rice (Paddy)</button>
+      <button class="preset-chip" data-preset="maize">🌽 Maize (Corn)</button>
+      <button class="preset-chip" data-preset="coffee">☕ Highland Coffee Estate</button>
+      <button class="preset-chip" data-preset="apple">🍏 Temperate Apple Orchard</button>
+      <button class="preset-chip" data-preset="grapes">🍇 Commercial Vineyard</button>
+      <button class="preset-chip" data-preset="watermelon">🍉 Summer Watermelon</button>
+      <button class="preset-chip" data-preset="chickpea">🫘 Semi-Arid Chickpea</button>
+      <button class="preset-chip" data-preset="cotton">☁️ Cotton (Black Soil)</button>
+      <button class="preset-chip" data-preset="coconut">🥥 Coastal Humid Coconut</button>
+      <button class="preset-chip" data-preset="banana">🍌 Tropical Banana Grove</button>
+    </div>
+  </section>
+
+  <!-- Main App Layout -->
+  <main class="app-container">
+    
+    <!-- LEFT COLUMN: Parameter Controls -->
+    <div class="card-panel">
+      <div class="panel-title">
+        <div class="panel-title-text">
+          <h3>Soil & Climate Parameters</h3>
+          <span class="badge-count">7 Features</span>
+        </div>
+        <button id="btnRandomize" class="btn-secondary-action" title="Generate realistic random farm conditions">
+          <span>🎲</span> Randomize
+        </button>
+      </div>
+
+      <form id="cropForm" onsubmit="return false;">
+        <div class="params-grid">
+          
+          <!-- Nitrogen (N) -->
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-meta">
+                <div class="param-icon" style="color: #3b82f6;">🧪</div>
+                <div>
+                  <div class="param-label">Nitrogen (N)</div>
+                  <div class="param-unit">Ratio in soil (kg/ha)</div>
+                </div>
+              </div>
+              <div class="param-input-wrap">
+                <button type="button" class="param-stepper-btn" data-step="-5" data-target="paramN">-</button>
+                <input type="number" id="paramN" class="param-number-input" min="0" max="140" step="1" value="80">
+                <button type="button" class="param-stepper-btn" data-step="5" data-target="paramN">+</button>
+              </div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderN" class="range-slider" min="0" max="140" step="1" value="80">
+              <div class="slider-bounds">
+                <span>0 kg/ha</span>
+                <span id="statusN" class="param-status-tag status-opt">Optimal (35-90)</span>
+                <span>140 kg/ha</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phosphorus (P) -->
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-meta">
+                <div class="param-icon" style="color: #ec4899;">🧫</div>
+                <div>
+                  <div class="param-label">Phosphorus (P)</div>
+                  <div class="param-unit">Ratio in soil (kg/ha)</div>
+                </div>
+              </div>
+              <div class="param-input-wrap">
+                <button type="button" class="param-stepper-btn" data-step="-5" data-target="paramP">-</button>
+                <input type="number" id="paramP" class="param-number-input" min="5" max="145" step="1" value="48">
+                <button type="button" class="param-stepper-btn" data-step="5" data-target="paramP">+</button>
+              </div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderP" class="range-slider" min="5" max="145" step="1" value="48">
+              <div class="slider-bounds">
+                <span>5 kg/ha</span>
+                <span id="statusP" class="param-status-tag status-opt">Optimal (25-75)</span>
+                <span>145 kg/ha</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Potassium (K) -->
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-meta">
+                <div class="param-icon" style="color: #f59e0b;">⚗️</div>
+                <div>
+                  <div class="param-label">Potassium (K)</div>
+                  <div class="param-unit">Ratio in soil (kg/ha)</div>
+                </div>
+              </div>
+              <div class="param-input-wrap">
+                <button type="button" class="param-stepper-btn" data-step="-5" data-target="paramK">-</button>
+                <input type="number" id="paramK" class="param-number-input" min="5" max="205" step="1" value="40">
+                <button type="button" class="param-stepper-btn" data-step="5" data-target="paramK">+</button>
+              </div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderK" class="range-slider" min="5" max="205" step="1" value="40">
+              <div class="slider-bounds">
+                <span>5 kg/ha</span>
+                <span id="statusK" class="param-status-tag status-opt">Optimal (30-80)</span>
+                <span>205 kg/ha</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Temperature -->
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-meta">
+                <div class="param-icon" style="color: #ef4444;">🌡️</div>
+                <div>
+                  <div class="param-label">Temperature</div>
+                  <div class="param-unit">Ambient season average (°C)</div>
+                </div>
+              </div>
+              <div class="param-input-wrap">
+                <button type="button" class="param-stepper-btn" data-step="-1" data-target="paramTemp">-</button>
+                <input type="number" id="paramTemp" class="param-number-input" min="8" max="45" step="0.5" value="24">
+                <button type="button" class="param-stepper-btn" data-step="1" data-target="paramTemp">+</button>
+              </div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderTemp" class="range-slider" min="8" max="45" step="0.5" value="24">
+              <div class="slider-bounds">
+                <span>8 °C</span>
+                <span id="statusTemp" class="param-status-tag status-opt">Pleasant / Warm</span>
+                <span>45 °C</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Humidity -->
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-meta">
+                <div class="param-icon" style="color: #06b6d4;">💧</div>
+                <div>
+                  <div class="param-label">Relative Humidity</div>
+                  <div class="param-unit">Atmospheric moisture (%)</div>
+                </div>
+              </div>
+              <div class="param-input-wrap">
+                <button type="button" class="param-stepper-btn" data-step="-5" data-target="paramHumidity">-</button>
+                <input type="number" id="paramHumidity" class="param-number-input" min="14" max="100" step="1" value="82">
+                <button type="button" class="param-stepper-btn" data-step="5" data-target="paramHumidity">+</button>
+              </div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderHumidity" class="range-slider" min="14" max="100" step="1" value="82">
+              <div class="slider-bounds">
+                <span>14% (Dry)</span>
+                <span id="statusHumidity" class="param-status-tag status-opt">Humid</span>
+                <span>100% (Saturated)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Soil pH -->
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-meta">
+                <div class="param-icon" style="color: #8b5cf6;">📐</div>
+                <div>
+                  <div class="param-label">Soil pH Value</div>
+                  <div class="param-unit">Acidity / Alkalinity scale (pH)</div>
+                </div>
+              </div>
+              <div class="param-input-wrap">
+                <button type="button" class="param-stepper-btn" data-step="-0.2" data-target="paramPh">-</button>
+                <input type="number" id="paramPh" class="param-number-input" min="3.5" max="9.5" step="0.1" value="6.5">
+                <button type="button" class="param-stepper-btn" data-step="0.2" data-target="paramPh">+</button>
+              </div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderPh" class="range-slider" min="3.5" max="9.5" step="0.1" value="6.5">
+              <div class="slider-bounds">
+                <span>3.5 (Acidic)</span>
+                <span id="statusPh" class="param-status-tag status-opt">Neutral (6.5-7.5)</span>
+                <span>9.5 (Alkaline)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rainfall -->
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-meta">
+                <div class="param-icon" style="color: #3b82f6;">🌧️</div>
+                <div>
+                  <div class="param-label">Rainfall</div>
+                  <div class="param-unit">Annual / seasonal precip. (mm)</div>
+                </div>
+              </div>
+              <div class="param-input-wrap">
+                <button type="button" class="param-stepper-btn" data-step="-10" data-target="paramRainfall">-</button>
+                <input type="number" id="paramRainfall" class="param-number-input" min="20" max="300" step="1" value="230">
+                <button type="button" class="param-stepper-btn" data-step="10" data-target="paramRainfall">+</button>
+              </div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderRainfall" class="range-slider" min="20" max="300" step="1" value="230">
+              <div class="slider-bounds">
+                <span>20 mm (Arid)</span>
+                <span id="statusRainfall" class="param-status-tag status-opt">Heavy Rain</span>
+                <span>300 mm (Monsoon)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Form Action Controls -->
+        <div class="form-actions">
+          <button type="button" id="btnPredict" class="btn-primary">
+            <span>🌱</span>
+            <span>Recommend Optimal Crop</span>
+          </button>
+          <button type="button" id="btnReset" class="btn-secondary">
+            <span>🔄</span> Reset
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- RIGHT COLUMN: Output Dashboard -->
+    <div class="results-column">
+
+      <!-- Hero Recommendation Result Card -->
+      <div class="card-panel winner-card" id="winnerCard">
+        <div class="winner-header">
+          <div class="winner-identity">
+            <div class="winner-icon-box" id="winnerIcon">🌾</div>
+            <div class="winner-titles">
+              <h4>Primary Recommendation</h4>
+              <h2 id="winnerName">Rice (Paddy)</h2>
+              <div class="scientific-name" id="winnerSciName">Oryza sativa</div>
+            </div>
+          </div>
+
+          <div class="confidence-box">
+            <span class="confidence-number" id="winnerConfidence">98.5%</span>
+            <span class="confidence-label">Match Score</span>
+          </div>
+        </div>
+
+        <div class="crop-tags-bar">
+          <span class="crop-tag category" id="winnerCategory">🌾 Cereal</span>
+          <span class="crop-tag" id="winnerDuration">⏱️ 120 - 150 days</span>
+          <span class="crop-tag" id="winnerWater">💧 High Water</span>
+          <span class="crop-tag" id="winnerSeason">📅 Kharif (June - July)</span>
+        </div>
+
+        <div class="crop-summary-box" id="winnerSummary">
+          Rice thrives in warm, humid conditions with abundant water availability and heavy, moisture-retaining soils.
+        </div>
+
+        <!-- At a glance stats -->
+        <div class="glance-grid">
+          <div class="glance-item">
+            <span class="label">Sowing Season</span>
+            <span class="val" id="glanceSowing">June - July</span>
+          </div>
+          <div class="glance-item">
+            <span class="label">Harvest Time</span>
+            <span class="val" id="glanceHarvest">Oct - Nov</span>
+          </div>
+          <div class="glance-item">
+            <span class="label">Ideal Temp</span>
+            <span class="val" id="glanceTemp">20°C - 35°C</span>
+          </div>
+          <div class="glance-item">
+            <span class="label">Ideal Rain</span>
+            <span class="val" id="glanceRain">150 - 300 mm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alternative Crops Section -->
+      <div class="alt-crops-section">
+        <h4>Alternative Viable Crops</h4>
+        <div class="alt-crops-grid" id="altCropsContainer">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Tabbed Deep Insights Section -->
+      <div class="card-panel tabs-wrapper">
+        <div class="tab-nav">
+          <button class="tab-btn active" data-tab="tabCultivation">
+            <span>📖</span> Cultivation Guide
+          </button>
+          <button class="tab-btn" data-tab="tabSoil">
+            <span>🔬</span> Soil Health & Rx
+          </button>
+          <button class="tab-btn" data-tab="tabRadar">
+            <span>📊</span> Condition Radar
+          </button>
+        </div>
+
+        <!-- TAB 1: Cultivation Guide -->
+        <div class="tab-pane active" id="tabCultivation">
+          <div class="cultivation-grid">
+            <div class="cult-card">
+              <div class="cult-card-header">
+                <span>🌱</span> Sowing & Harvest Window
+              </div>
+              <p id="cultSowingWindow">Sowing: June - July (Kharif). Harvest: October - November.</p>
+            </div>
+
+            <div class="cult-card">
+              <div class="cult-card-header">
+                <span>🏞️</span> Soil Types Suitable
+              </div>
+              <p id="cultSoilTypes">Clayey Loam, Alluvial, Silty Clay with strong moisture retention.</p>
+            </div>
+
+            <div class="cult-card">
+              <div class="cult-card-header">
+                <span>💧</span> Water & Irrigation Strategy
+              </div>
+              <p id="cultWater">Flooded / continuous submergence 5-10 cm during active tillering.</p>
+            </div>
+
+            <div class="cult-card">
+              <div class="cult-card-header">
+                <span>🧪</span> Fertilizer Management
+              </div>
+              <p id="cultFertilizer">Split application of Nitrogen (Basal, Tillering, Panicle initiation). Requires adequate P & K for stem strength.</p>
+            </div>
+
+            <div class="cult-card">
+              <div class="cult-card-header">
+                <span>🛡️</span> Common Pests & Diseases
+              </div>
+              <p id="cultPests">Stem borer, Brown planthopper, Blast, Bacterial leaf blight.</p>
+            </div>
+
+            <div class="cult-card">
+              <div class="cult-card-header">
+                <span>💰</span> Economic Market Value
+              </div>
+              <p id="cultEconomic">Staple food crop feeding over 50% of world population. High domestic & export market demand.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: Soil Health Scorecard -->
+        <div class="tab-pane" id="tabSoil">
+          <div class="soil-scorecard">
+            
+            <div class="scorecard-banner">
+              <div>
+                <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Overall Soil Health Index</div>
+                <div class="score-number-box">
+                  <span class="score-huge" id="soilHealthScore">100</span>
+                  <span class="score-max">/ 100</span>
+                </div>
+              </div>
+              <div class="score-rating-pill" id="soilRatingPill">Excellent Quality</div>
+            </div>
+
+            <!-- NPK & pH Quick Diagnostics -->
+            <div class="soil-nutrients-row">
+              <div class="nutrient-card">
+                <span class="sym">Nitrogen (N)</span>
+                <div class="val" id="soilDiagN">80</div>
+                <div class="status status-opt" id="soilStatN">Optimal</div>
+              </div>
+              <div class="nutrient-card">
+                <span class="sym">Phosphorus (P)</span>
+                <div class="val" id="soilDiagP">48</div>
+                <div class="status status-opt" id="soilStatP">Optimal</div>
+              </div>
+              <div class="nutrient-card">
+                <span class="sym">Potassium (K)</span>
+                <div class="val" id="soilDiagK">40</div>
+                <div class="status status-opt" id="soilStatK">Optimal</div>
+              </div>
+              <div class="nutrient-card">
+                <span class="sym">Soil pH</span>
+                <div class="val" id="soilDiagPh">6.5</div>
+                <div class="status status-opt" id="soilStatPh">Optimal</div>
+              </div>
+            </div>
+
+            <!-- Fertilizer Prescription Plan -->
+            <div class="fertilizer-plan">
+              <h5><span>📋</span> Agronomic Soil Prescription & Fertilizer Advisory</h5>
+              <ul class="advice-list" id="soilAdviceList">
+                <!-- Injected via JavaScript -->
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TAB 3: Radar Chart Match -->
+        <div class="tab-pane" id="tabRadar">
+          <div class="radar-container">
+            <div class="radar-canvas-wrap">
+              <canvas id="radarCanvas" width="440" height="440"></canvas>
+            </div>
+            <div class="chart-legend">
+              <div class="legend-item">
+                <div class="legend-dot dot-user"></div>
+                <span>Your Farm Conditions</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot dot-ideal"></div>
+                <span>Crop Benchmark Ideal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- 22 Crop Explorer Modal -->
+  <div class="modal-backdrop" id="catalogModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>Crop Knowledgebase & Agronomic Catalog</h3>
+        <button class="btn-close" id="btnCloseCatalog" title="Close Modal">&times;</button>
+      </div>
+
+      <div class="modal-search-bar">
+        <input type="text" id="catalogSearch" class="search-input" placeholder="🔍 Search by crop name, category, or season...">
+        <div class="filter-pills">
+          <button class="filter-pill active" data-filter="all">All (22)</button>
+          <button class="filter-pill" data-filter="Cereal">Cereals</button>
+          <button class="filter-pill" data-filter="Pulse">Pulses</button>
+          <button class="filter-pill" data-filter="Fruit">Fruits</button>
+          <button class="filter-pill" data-filter="Commercial">Commercial</button>
+        </div>
+      </div>
+
+      <div class="modal-body" id="catalogGrid">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div>
+        <strong>CropAI Recommendation System</strong> — Precision Agronomic Decision Support Tool
+      </div>
+      <div>
+        Empowering farmers, agronomists, and researchers with AI-driven crop selection.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="crop_data.js"></script>
+  <script src="ml_engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
